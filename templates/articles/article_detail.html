@@ -1,0 +1,32 @@
+{% extends "_base.html" %}
+{% load static %}
+
+{% block title %}{{ article.title }}{% endblock %}
+
+{% block content %}
+  <style>
+    .record-link {
+      text-decoration: none; /* Removes underline */
+      transition: transform 0.2s ease-in-out, font-size 0.2s ease-in-out; /* Smooth transition for the hover effect */
+    }
+
+    .record-link:hover {
+      transform: translateY(-5px); /* Moves the link up slightly */
+      font-size: 1.1em; /* Increases the font size */
+    }
+  </style>
+
+  <img src="{{ article.image.url }}" alt="{{ article.title }}" 
+    style="display: block; width: 100%; max-width: 400px; height: auto; object-fit: cover; margin: 0 auto;" />
+  
+  <h1>{{ article.title }}</h1>
+  <p><strong>Written by</strong> {{ article.author.username }}</p>
+  
+  <!-- Link to the recording page with Font Awesome icon -->
+  <p><a href="{% url 'article_record' article.pk %}" class="record-link"><i class="fas fa-microphone"></i> Click here to record your reading of this article!</a></p>
+  
+  <p style="text-align: justify;">{{ article.content|linebreaksbr }}</p>
+  
+  <p>Created at {{ article.created_at }}</p>
+  <p>Edited at {{ article.edited_at }}</p>
+{% endblock %}

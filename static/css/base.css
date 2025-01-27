@@ -1,0 +1,17 @@
+body {
+  min-height: 75rem;
+  padding-top: 4.5rem;
+  padding-left: 4.5rem;  /* Adjust left padding */
+  padding-right: 4.5rem; /* Adjust right padding */
+  margin: 0 auto;
+  max-width: 1200px; /* Set a maximum width for the content */
+}
+
+.navbar-brand {
+  font-weight: bold;
+  font-family: 'Dancing Script', cursive;
+}
+
+footer {
+  background-color: white;
+}

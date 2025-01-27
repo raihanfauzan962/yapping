@@ -1,0 +1,162 @@
+{% extends "_base.html" %}
+{% load static %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <!-- Left Section: Articles List -->
+    <div class="left-section">
+      <h4 class="section-title">For you</h4>
+      
+      {% if articles %}
+        <ul class="article-list">
+          {% for article in articles %}
+            <li class="article-item">
+              {% if article.image %}
+                <a href="{% url 'article_detail' article.id %}" class="article-image-link">
+                  <img src="{{ article.image.url }}" alt="{{ article.title }}" class="article-image"/>
+                </a>
+              {% endif %}
+              <h4>
+                <a href="{% url 'article_detail' article.id %}" class="article-title">
+                  {{ article.title }}
+                </a>
+              </h4>
+              <p class="article-author">Written by {{ article.author.username }}</p>
+              <p class="article-date">{{ article.created_at|date:"M d, Y" }}</p>
+              <p class="article-excerpt">{{ article.content|truncatewords:20 }}</p>
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p>No articles available.</p>
+      {% endif %}
+    </div>
+
+    <!-- Right Section: Guide -->
+    <div class="right-section">
+      <p>Play me!</p>
+      <audio controls class="audio-greeting">
+        <source src="{% static 'audio/greeting.mp3' %}" type="audio/mp3">
+        Your browser does not support the audio element.
+      </audio>
+
+      <h5 class="guide-title">How to get started</h5>
+      <p class="guide-text">Please choose an article from the left to read and record your voice. Follow the instructions below:</p>
+      <ul class="guide-steps">
+        <li>1. Select an article that interests you.</li>
+        <li>2. Read the article aloud while recording your voice.</li>
+        <li>3. Make sure your pronunciation and intonation are clear.</li>
+        <li>4. Submit your recording for feedback.</li>
+      </ul>
+      <p class="guide-text">Good luck with your practice!</p>
+      <!-- About page -->
+      <p class="guide-text"><a href="{% url 'about' %}" style="text-decoration: none;">About</a></p>
+      <!-- Copyright Notice -->
+      <p class="copyright-text">&copy; 2025 Raihan Fauzan. All rights reserved.</p>
+    </div>
+  </div>
+
+  <style>
+    /* General Layout and Styling */
+    .container {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .left-section {
+      width: 65%;
+      padding-right: 20px;
+    }
+
+    .right-section {
+      width: 30%;
+      padding-left: 20px;
+      background-color: #f8f9fa;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    /* Titles and Text */
+    .section-title {
+      margin-bottom: 20px;
+      border-bottom: 1px solid #ddd;
+      font-family: 'Dancing Script', cursive;
+    }
+
+    .article-title {
+      color: black;
+      text-decoration: none;
+    }
+
+    .guide-title {
+      margin-bottom: 15px;
+      font-weight: bold;
+    }
+
+    .guide-text {
+      font-size: 14px;
+      color: #555;
+    }
+
+    .copyright-text {
+      font-size: 12px;
+      color: #aaa;
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    /* Article List Styling */
+    .article-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .article-item {
+      margin-bottom: 20px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .article-image-link {
+      display: block;
+    }
+
+    .article-image {
+      max-width: 300px;
+      max-height: 150px;
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    .article-author, .article-date, .article-excerpt {
+      font-size: 14px;
+      color: #555;
+    }
+
+    /* Guide Steps */
+    .guide-steps {
+      font-size: 14px;
+      color: #555;
+    }
+
+    .guide-steps li {
+      margin-bottom: 5px;
+    }
+
+    /* Hover Effects */
+    .article-image:hover {
+      transform: scale(1.05);
+    }
+
+    /* Audio Controls */
+    .audio-greeting {
+      margin-bottom: 20px;
+      width: 100%;
+    }
+  </style>
+{% endblock %}
