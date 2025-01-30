@@ -1,0 +1,194 @@
+:root {
+    --primary: #2A6B84;
+    --secondary: #4CAF50;
+    --accent: #FF6B6B;
+    --dark: #1a1a1a;
+    --light: #f8f9fa;
+    --gradient: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+}
+
+.recording-detail {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+}
+
+.recording-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.recording-header h1 {
+    font-size: 2.5rem;
+    color: var(--dark);
+    margin-bottom: 1rem;
+}
+
+.meta-info {
+    background: rgba(var(--primary), 0.05);
+    padding: 1.5rem;
+    border-radius: 1rem;
+    margin-top: 1rem;
+}
+
+.score-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin: 3rem 0;
+}
+
+.score-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    transition: transform 0.3s ease;
+}
+
+.score-card:hover {
+    transform: translateY(-5px);
+}
+
+.score-content h3 {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.score-value {
+    font-size: 3.5rem;
+    font-weight: 700;
+    text-align: center;
+    color: var(--primary);
+}
+
+.na {
+    color: #666;
+    font-size: 2rem;
+}
+
+.audio-section {
+    margin: 3rem 0;
+}
+
+.audio-player audio {
+    width: 100%;
+    height: 50px;
+    border-radius: 1rem;
+}
+
+.content-section {
+    margin: 3rem 0;
+}
+
+.content-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 1rem;
+    line-height: 1.8;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.feedback-section {
+    margin: 4rem 0;
+}
+
+.metric-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+}
+
+.metric-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+
+.metric-card.highlight {
+    background: var(--gradient);
+    color: white;
+}
+
+.metric-value {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.comments-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 1rem;
+    margin-top: 2rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.ai-section {
+    margin: 4rem 0;
+}
+
+.ai-feedback {
+    background: white;
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.highlight-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin: 3rem 0;
+}
+
+.highlight-content {
+    background: white;
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    line-height: 1.8;
+}
+
+span[style*="color: green;"] {
+    background: rgba(var(--secondary), 0.1);
+    color: var(--secondary) !important;
+    padding: 0.2em 0.4em;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+span[style*="color: red;"] {
+    background: rgba(var(--accent), 0.1);
+    color: var(--accent) !important;
+    padding: 0.2em 0.4em;
+    border-radius: 4px;
+}
+
+.pending-feedback {
+    text-align: center;
+    padding: 3rem;
+    background: rgba(var(--primary), 0.05);
+    border-radius: 1rem;
+}
+
+@media (max-width: 768px) {
+    .recording-detail {
+        padding: 0 1rem;
+    }
+    
+    .recording-header h1 {
+        font-size: 2rem;
+    }
+    
+    .score-value {
+        font-size: 2.5rem;
+    }
+}

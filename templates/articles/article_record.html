@@ -2,123 +2,76 @@
 {% load static %}
 
 {% block content %}
-  <h1>{{ article.title }}</h1>
-  
-  <p><strong>Read the article out loud and record your voice.<br>
-    Read only the content of the article, no need to read the title.</strong></p>
-  
-  <div>
-    <!-- Play Button -->
-    <button id="start-btn" class="btn btn-primary" aria-label="Start Recording">
-      Start
-    </button>
-  
-    <!-- Stop Button -->
-    <button id="stop-btn" class="btn btn-danger" disabled aria-label="Stop Recording">
-      Stop
-    </button>
-  
-    <!-- Submit Button -->
-    <button id="submit-btn" class="btn btn-success" disabled aria-label="Submit Recording">
-      Submit
-    </button>
-  </div>
-  
-  <!-- Audio Preview Section -->
-  <p><strong>Audio Preview:</strong></p>
-  <p id="audio-message" style="color: grey;"><i>Your audio preview will show here when you stop or finish recording.</i></p>
-  <audio id="audio-preview" controls style="display: none;"></audio>
+<main class="recording-container">
+    <article class="recording-card">
+        <header class="recording-header">
+            <h1 class="article-title">{{ article.title }}</h1>
+            <p class="recording-instruction">
+                Read the article content aloud (title not required)<br>
+                <span class="warning-text">Avoid background noise for best results</span>
+            </p>
+        </header>
 
-  <!-- Real-time Speech Transcript Section -->
-  <p><strong>Real-time Transcript:</strong></p>
-  <p style="color: grey;"><i>The real-time transcript is for your reference only, and for you to know that the microphone is working. The final transcript will be displayed after you finish recording and click the submit button.</i></p>
-  <div id="speech-transcript" style="border: 1px solid #ddd; padding: 10px; height: 150px; overflow-y: auto; font-style: italic;">
-    <!-- Transcript will appear here -->
-  </div>
+        <!-- Controls Section -->
+        <section class="controls-section">
+            <div class="button-group">
+                <button id="start-btn" class="control-btn primary">
+                    <i class="fas fa-microphone"></i>
+                    Start Recording
+                </button>
+                <button id="stop-btn" class="control-btn danger" disabled>
+                    <i class="fas fa-stop"></i>
+                    Stop
+                </button>
+                <button id="submit-btn" class="control-btn success" disabled>
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    Submit
+                </button>
+            </div>
+            <p class="processing-notice">
+                <i class="fas fa-info-circle"></i>
+                After submitting, please wait while we process your recording
+            </p>
+        </section>
 
-  <p style="text-align: justify;">{{ article.content|linebreaksbr }}</p>
+        <!-- Audio Preview -->
+        <section class="audio-section">
+            <h2 class="section-heading">Audio Preview</h2>
+            <div class="audio-player">
+                <p class="placeholder-text" id="audio-message">
+                    <i class="fas fa-headphones"></i>
+                    Your audio preview will appear here
+                </p>
+                <audio id="audio-preview" controls class="custom-audio"></audio>
+            </div>
+        </section>
 
-  <form id="audio-form" action="{% url 'article_record' article.pk %}" method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    <input type="hidden" name="article" value="{{ article.pk }}">
-    <input type="file" id="audio-file" name="audio_file" style="display:none;">
-    <input type="submit" style="display:none;">
-  </form>
+        <!-- Live Transcript -->
+        <section class="transcript-section">
+            <h2 class="section-heading">Live Transcription</h2>
+            <div class="transcript-container">
+                <p class="placeholder-text">
+                    <i class="fas fa-comment-dots"></i>
+                    Real-time transcript will appear here as you speak
+                </p>
+                <div id="speech-transcript" class="live-transcript"></div>
+            </div>
+        </section>
 
-  <script>
-    let mediaRecorder;
-    let audioChunks = [];
-    let recognition;
+        <!-- Article Content -->
+        <section class="article-content">
+            <div class="content-wrapper">
+                {{ article.content|linebreaksbr }}
+            </div>
+        </section>
+    </article>
 
-    const startButton = document.getElementById('start-btn');
-    const stopButton = document.getElementById('stop-btn');
-    const submitButton = document.getElementById('submit-btn');
-    const audioFileInput = document.getElementById('audio-file');
-    const audioForm = document.getElementById('audio-form');
-    const audioPreview = document.getElementById('audio-preview');
-    const audioMessage = document.getElementById('audio-message');
-    const speechTranscript = document.getElementById('speech-transcript');
-    
-    startButton.onclick = async () => {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      mediaRecorder = new MediaRecorder(stream);
-      
-      mediaRecorder.ondataavailable = event => {
-        audioChunks.push(event.data);
-      };
-      
-      mediaRecorder.onstop = () => {
-        const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-        const audioUrl = URL.createObjectURL(audioBlob);
-
-        // Hide the message and display the audio preview
-        audioMessage.style.display = 'none';
-        audioPreview.style.display = 'block';
-        audioPreview.src = audioUrl;
-        
-        // Create a file object from the audio blob
-        const file = new File([audioBlob], 'recording.wav', { type: 'audio/wav' });
-        audioFileInput.files = new DataTransfer().files;  // Clear previous files
-        const dataTransfer = new DataTransfer();
-        dataTransfer.items.add(file);
-        audioFileInput.files = dataTransfer.files;
-
-        submitButton.disabled = false;
-      };
-      
-      mediaRecorder.start();
-      startButton.disabled = true;
-      stopButton.disabled = false;
-      
-      // Initialize speech recognition
-      if ('webkitSpeechRecognition' in window) {
-        recognition = new webkitSpeechRecognition();
-        recognition.continuous = true;  // Keep recognizing speech until stop
-        recognition.interimResults = true; // Show partial results
-        recognition.lang = 'en-US'; // Language setting
-        
-        recognition.onresult = event => {
-          let transcript = '';
-          for (let i = event.resultIndex; i < event.results.length; i++) {
-            transcript += event.results[i][0].transcript;
-          }
-          // Update the transcript as the user speaks
-          speechTranscript.textContent = transcript;
-        };
-
-        recognition.start();
-      }
-    };
-
-    stopButton.onclick = () => {
-      mediaRecorder.stop();
-      recognition.stop();  // Stop speech recognition
-      startButton.disabled = false;
-      stopButton.disabled = true;
-    };
-
-    submitButton.onclick = () => {
-      audioForm.submit();
-    };
-  </script>
+    <!-- Hidden Form -->
+    <form id="audio-form" action="{% url 'article_record' article.pk %}" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      <input type="hidden" name="article" value="{{ article.pk }}">
+      <input type="file" id="audio-file" name="audio_file" style="display:none;">
+      <input type="submit" style="display:none;">
+    </form>
+</main>
 {% endblock %}

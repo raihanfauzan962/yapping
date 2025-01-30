@@ -2,77 +2,50 @@
 {% load static %}
 
 {% block content %}
-<h1>Your Recordings</h1>
+<div class="recordings-container">
+    <header class="recordings-header">
+        <h1>Your Voice Recordings</h1>
+        <p class="subtitle">Review and manage your practice sessions</p>
+    </header>
 
-<style>
-/* General table styles */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-}
-
-/* Table header and data styles */
-th, td {
-    padding: 15px;
-    text-align: left;
-}
-
-/* Specific column widths */
-th:nth-child(1), td:nth-child(1) {
-    width: 25%;
-}
-
-th:nth-child(2), td:nth-child(2) {
-    width: 25%;
-}
-
-th:nth-child(3), td:nth-child(3) {
-    width: 20%;
-}
-
-th:nth-child(4), td:nth-child(4) {
-    width: 30%;
-}
-
-/* Style for the links in the "Details" column */
-a {
-    color: #007bff;
-    text-decoration: none;
-}
-
-a:hover {
-    text-decoration: underline;
-}
-</style>
-
-{% if recordings %}
-<table>
-    <thead>
-        <tr>
-            <th>Article</th>
-            <th>Audio File</th>
-            <th>Submitted At</th>
-            <th>Details</th>
-        </tr>
-    </thead>
-    <tbody>
+    {% if recordings %}
+    <div class="recordings-grid">
         {% for recording in recordings %}
-        <tr>
-            <td>{{ recording.article.title }}</td>
-            <td>
-                <audio controls>
+        <div class="recording-card">
+            <div class="card-header">
+                <h3 class="article-title">{{ recording.article.title }}</h3>
+                <time class="recording-date">
+                    <i class="fas fa-calendar-alt"></i>
+                    {{ recording.submitted_at|date:"M d, Y" }}
+                </time>
+            </div>
+            
+            <div class="audio-wrapper">
+                <audio controls class="custom-audio">
                     <source src="{{ recording.audio_file.url }}" type="audio/mpeg">
-                    Your browser does not support the audio element.
+                    Your browser does not support audio playback
                 </audio>
-            </td>
-            <td>{{ recording.submitted_at }}</td>
-            <td><a href="{% url 'user_recording_detail' recording.pk %}">View Details</a></td>
-        </tr>
+            </div>
+
+            <div class="card-footer">
+                <a href="{% url 'user_recording_detail' recording.pk %}" class="details-link">
+                    View Details <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
         {% endfor %}
-    </tbody>
-</table>
-{% else %}
-<p>You have not uploaded any recordings yet.</p>
-{% endif %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <div class="empty-icon">
+            <i class="fas fa-microphone-slash"></i>
+        </div>
+        <h2>No Recordings Found</h2>
+        <p>Start practicing by recording your first article!</p>
+        <a href="{% url 'article_list' %}" class="cta-button">
+            Browse Articles <i class="fas fa-book-open"></i>
+        </a>
+    </div>
+    {% endif %}
+</div>
 {% endblock %}

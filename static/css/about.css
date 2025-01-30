@@ -1,0 +1,179 @@
+:root {
+    --primary: #2A6B84;
+    --secondary: #4CAF50;
+    --accent: #FF6B6B;
+    --dark: #1a1a1a;
+    --light: #f8f9fa;
+    --gradient: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+}
+
+.about-section {
+    padding: 4rem 1rem;
+    background: var(--light);
+}
+
+.about-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.about-header {
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.about-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    line-height: 1.3;
+}
+
+.gradient-text {
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.lead-text {
+    font-size: 1.2rem;
+    color: #666;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.feature-card {
+    background: white;
+    border-radius: 1rem;
+    padding: 2rem;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    margin-bottom: 3rem;
+    text-align: center;
+}
+
+.icon-wrapper {
+    width: 80px;
+    height: 80px;
+    background: var(--gradient);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    color: white;
+    font-size: 1.8rem;
+}
+
+.grid-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.modern-list {
+    list-style: none;
+    padding: 0;
+}
+
+.modern-list li {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+    padding: 1.5rem;
+    background: white;
+    border-radius: 0.8rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    transition: transform 0.3s ease;
+}
+
+.modern-list li:hover {
+    transform: translateY(-5px);
+}
+
+.modern-list i {
+    font-size: 1.5rem;
+    color: var(--primary);
+    margin-top: 0.5rem;
+}
+
+.number-badge {
+    display: inline-block;
+    width: 35px;
+    height: 35px;
+    background: var(--gradient);
+    color: white;
+    border-radius: 8px;
+    text-align: center;
+    line-height: 35px;
+    margin-right: 1rem;
+}
+
+.process-steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.step-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 1rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.step-number {
+    width: 50px;
+    height: 50px;
+    background: var(--gradient);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin: 0 auto 1rem;
+}
+
+.value-proposition {
+    background: var(--gradient);
+    border-radius: 1rem;
+    padding: 3rem;
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.cta-box {
+    background: rgba(255,255,255,0.1);
+    padding: 1.5rem;
+    border-radius: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.cta-box i {
+    font-size: 1.8rem;
+}
+
+@media (max-width: 768px) {
+    .about-header h1 {
+        font-size: 2rem;
+    }
+    
+    .modern-list li {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    
+    .value-proposition {
+        padding: 2rem 1rem;
+    }
+}

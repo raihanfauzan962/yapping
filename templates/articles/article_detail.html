@@ -4,29 +4,41 @@
 {% block title %}{{ article.title }}{% endblock %}
 
 {% block content %}
-  <style>
-    .record-link {
-      text-decoration: none; /* Removes underline */
-      transition: transform 0.2s ease-in-out, font-size 0.2s ease-in-out; /* Smooth transition for the hover effect */
-    }
+<article class="article-detail">
+    <!-- Article Header -->
+    <header class="article-header">
+        <img src="{{ article.image.url }}" alt="{{ article.title }}" class="article-hero">
+        <div class="article-meta">
+            <h1 class="article-title">{{ article.title }}</h1>
+            <div class="author-info">
+                <span class="author-badge">Written by {{ article.author.username }}</span>
+                <div class="meta-dates">
+                    <time class="date-created">Published {{ article.created_at|date:"M d, Y" }}</time>
+                    {% if article.edited_at %}
+                    <time class="date-updated">Updated {{ article.edited_at|date:"M d, Y" }}</time>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </header>
 
-    .record-link:hover {
-      transform: translateY(-5px); /* Moves the link up slightly */
-      font-size: 1.1em; /* Increases the font size */
-    }
-  </style>
+    <!-- Recording CTA -->
+    <section class="recording-cta">
+        <a href="{% url 'article_record' article.pk %}" class="record-button">
+            <i class="fas fa-microphone"></i>
+            <span>Start Recording</span>
+        </a>
+        <p class="cta-note">Click above to practice reading this article</p>
+    </section>
 
-  <img src="{{ article.image.url }}" alt="{{ article.title }}" 
-    style="display: block; width: 100%; max-width: 400px; height: auto; object-fit: cover; margin: 0 auto;" />
-  
-  <h1>{{ article.title }}</h1>
-  <p><strong>Written by</strong> {{ article.author.username }}</p>
-  
-  <!-- Link to the recording page with Font Awesome icon -->
-  <p><a href="{% url 'article_record' article.pk %}" class="record-link"><i class="fas fa-microphone"></i> Click here to record your reading of this article!</a></p>
-  
-  <p style="text-align: justify;">{{ article.content|linebreaksbr }}</p>
-  
-  <p>Created at {{ article.created_at }}</p>
-  <p>Edited at {{ article.edited_at }}</p>
+    <!-- Article Content -->
+    <section class="article-content">
+        {{ article.content|linebreaksbr }}
+    </section>
+
+    <!-- Progress Section -->
+    <div class="progress-footer">
+        <p>Track your progress in <a href="{% url 'user_recording_list' %}">Your Recordings</a></p>
+    </div>
+</article>
 {% endblock %}

@@ -4,38 +4,86 @@
 {% block title %}About{% endblock title %}
 
 {% block content %}
-  <div class="container mx-auto p-6">
-    <div class="bg-white shadow-md rounded-lg p-8">
-      <h2 class="text-4xl font-bold text-center mb-6">About Us</h2>
-      <p class="text-lg leading-7 mb-4 text-justify">
-        Welcome to our website, your go-to platform for enhancing your English speaking and pronunciation skills. Whether you aim to improve your clarity or refine your fluency, we are here to support you on your journey to becoming a confident English speaker.
-      </p>
+<section class="about-section">
+    <div class="about-container">
+        <div class="about-header">
+            <h1>Master English with<span class="gradient-text"> Precision & Confidence</span></h1>
+            <p class="lead-text">Your journey to flawless pronunciation starts here</p>
+        </div>
 
-      <h3 class="text-2xl font-semibold mt-6 mb-4">Features of Our Platform</h3>
-      <ul class="list-disc ml-8 mb-6">
-        <li class="mb-3 text-justify">Explore engaging articles designed to improve your reading and comprehension.</li>
-        <li class="mb-3 text-justify">Record your voice while reading these articles and receive a detailed evaluation of your pronunciation through our advanced AI technology.</li>
-        <li class="mb-3 text-justify">Get a comprehensive score based on your spoken reading, with mispronounced words highlighted in red and corrections shown in green.</li>
-        <li class="mb-3 text-justify">Receive actionable feedback from professional evaluators, covering pronunciation, intonation, and fluency.</li>
-        <li class="text-justify">Unlimited practice opportunities for registered users—record your voice as many times as you like and track your progress over time.</li>
-      </ul>
+        <div class="about-content">
+            <div class="feature-card">
+                <div class="icon-wrapper">
+                    <i class="fas fa-microphone-alt"></i>
+                </div>
+                <h2>Why Choose Yapping?</h2>
+                <p class="feature-text">Transform your speaking skills through AI-powered analysis and expert feedback, designed to help you speak English with clarity and confidence.</p>
+            </div>
 
-      <h3 class="text-2xl font-semibold mt-6 mb-4">How It Works</h3>
-      <p class="text-lg leading-7 mb-4 text-justify">
-        Our platform uses cutting-edge speech recognition technology to analyze your recordings and generate a transcript of your speech. You’ll receive a detailed breakdown of errors and personalized guidance to help you improve. Our AI highlights areas for improvement while also celebrating your strengths, ensuring a balanced learning experience.
-      </p>
-      <p class="text-lg leading-7 mb-4 text-justify">
-        Additionally, a professional evaluator reviews your speech to provide targeted feedback. This dual approach combines the power of technology with the expertise of human evaluators, offering you the best of both worlds.
-      </p>
+            <div class="grid-layout">
+                <!-- Features Section -->
+                <article class="feature-block">
+                    <h3><span class="number-badge">01</span>Core Features</h3>
+                    <ul class="modern-list">
+                        <li>
+                            <i class="fas fa-book-open"></i>
+                            <div>
+                                <h4>Engaging Content Library</h4>
+                                <p>Curated articles spanning various topics and difficulty levels</p>
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-robot"></i>
+                            <div>
+                                <h4>AI-Powered Analysis</h4>
+                                <p>Instant pronunciation scoring with detailed visual feedback</p>
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-chart-line"></i>
+                            <div>
+                                <h4>Progress Tracking</h4>
+                                <p>Visualize your improvement with detailed metrics over time</p>
+                            </div>
+                        </li>
+                    </ul>
+                </article>
 
-      <h3 class="text-2xl font-semibold mt-6 mb-4">Why Choose Us?</h3>
-      <p class="text-lg leading-7 mb-4 text-justify">
-        We believe that practice is the key to mastery. Our platform is designed to provide you with endless opportunities to practice, refine, and excel. With personalized feedback and progress tracking, you can approach your English-speaking goals at your own pace and achieve measurable results.
-      </p>
+                <!-- How It Works Section -->
+                <article class="process-block">
+                    <h3><span class="number-badge">02</span>Our Methodology</h3>
+                    <div class="process-steps">
+                        <div class="step-card">
+                            <div class="step-number">1</div>
+                            <h4>Smart Recording</h4>
+                            <p>Record your speech through our intuitive interface</p>
+                        </div>
+                        <div class="step-card">
+                            <div class="step-number">2</div>
+                            <h4>Instant Analysis</h4>
+                            <p>Get real-time AI feedback on pronunciation errors</p>
+                        </div>
+                        <div class="step-card">
+                            <div class="step-number">3</div>
+                            <h4>Expert Review</h4>
+                            <p>Receive personalized feedback from language coaches</p>
+                        </div>
+                    </div>
+                </article>
+            </div>
 
-      <p class="text-lg leading-7 font-semibold text-center mt-8 text-justify">
-        Thank you for choosing our platform. We are thrilled to support you on your journey to becoming a better English speaker. Remember: the more you practice, the better you’ll become. Happy learning!
-      </p>
+            <!-- Value Proposition -->
+            <div class="value-proposition">
+                <div class="vp-content">
+                    <h3><span class="number-badge">03</span>Our Promise</h3>
+                    <p class="vp-text">We combine cutting-edge technology with human expertise to deliver a learning experience that adapts to your unique needs and helps you achieve measurable progress.</p>
+                    <div class="cta-box">
+                        <i class="fas fa-bullseye"></i>
+                        <p>Start your journey to confident English speaking today</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
+</section>
 {% endblock content %}
