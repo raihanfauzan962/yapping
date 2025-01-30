@@ -1,12 +1,12 @@
 import os
-import tempfile
 import whisper
+import tempfile
+from gtts import gTTS
 from difflib import SequenceMatcher
-from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
 from .models import Article, UserRecording
 from .forms import UserRecordingForm
-from gtts import gTTS  # Import gTTS for text-to-speech functionality
+from django.shortcuts import render, get_object_or_404, redirect
 
 def article_list(request):
     """Display all articles."""
@@ -50,22 +50,34 @@ def generate_feedback(transcript, article_content):
     for tag, i1, i2, j1, j2 in matcher.get_opcodes():
         if tag == 'replace':
             # Feedback for replacements
-            feedback.append(f"Replace: {' '.join(transcript_words[j1:j2])} -> {' '.join(article_words[i1:i2])}")
+            incorrect_text = ' '.join(transcript_words[j1:j2])
+            correct_text = ' '.join(article_words[i1:i2])
+
+            feedback.append(
+                f"Replace: <span style='color: red;'>{incorrect_text}</span> → "
+                f"<span style='color: green;' onclick='playTTS(\"{correct_text}\")'>{correct_text}</span>"
+            )
             # Highlight errors in transcript (red) and corrections in article content (green)
-            highlighted_transcript.append(f"<span style='color: red;'>{' '.join(transcript_words[j1:j2])}</span>")
-            highlighted_article.append(f"<span style='color: green;'>{' '.join(article_words[i1:i2])}</span>")
+            highlighted_transcript.append(f"<span style='color: red;'>{incorrect_text}</span>")
+            highlighted_article.append(
+                f"<span style='color: green;' onclick='playTTS(\"{correct_text}\")'>{correct_text}</span>"
+            )
         elif tag == 'delete':
             # Feedback for missing words
-            feedback.append(f"Missing: {' '.join(article_words[i1:i2])}")
+            missing_text = ' '.join(article_words[i1:i2])
+            feedback.append(
+                f"Missing: <span style='color: green;' onclick='playTTS(\"{missing_text}\")'>{missing_text}</span>"
+            )
             # Highlight missing words in article content (green)
             highlighted_article.append(
-                f"<span style='color: green;' onclick='playTTS(\"{' '.join(article_words[i1:i2])}\")'>{' '.join(article_words[i1:i2])}</span>"
+                f"<span style='color: green;' onclick='playTTS(\"{missing_text}\")'>{missing_text}</span>"
             )
         elif tag == 'insert':
             # Feedback for extra words
-            feedback.append(f"Extra: {' '.join(transcript_words[j1:j2])}")
+            extra_text = ' '.join(transcript_words[j1:j2])
+            feedback.append(f"Extra: <span style='color: red;'>{extra_text}</span>")
             # Highlight extra words in transcript (red)
-            highlighted_transcript.append(f"<span style='color: red;'>{' '.join(transcript_words[j1:j2])}</span>")
+            highlighted_transcript.append(f"<span style='color: red;'>{extra_text}</span>")
         else:
             # Add correctly matched words without styling
             highlighted_transcript.append(' '.join(transcript_words[j1:j2]))
@@ -77,6 +89,7 @@ def generate_feedback(transcript, article_content):
 
     # Return feedback, highlighted transcript, and highlighted article
     return "\n".join(feedback), highlighted_transcript_text, highlighted_article_text
+
 
 def article_record(request, pk):
     """Page for recording audio for an article."""
