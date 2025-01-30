@@ -1,8 +1,8 @@
 from django.contrib import admin
-from .models import Article, UserRecording, Feedback
-from django.utils.translation import gettext_lazy as _
 from django.urls import reverse
 from django.utils.html import format_html
+from django.utils.translation import gettext_lazy as _
+from .models import Article, UserRecording, Feedback
 
 class ArticleAdmin(admin.ModelAdmin):
     list_display = ('title', 'author', 'created_at', 'edited_at', 'is_published')
@@ -26,7 +26,7 @@ class UserRecordingAdmin(admin.ModelAdmin):
     list_display = ('user', 'article', 'pronunciation_score', 'submitted_at')
     list_filter = ('user', 'article', 'submitted_at')
     search_fields = ('user__username', 'article__title')
-    readonly_fields = ('transcript', 'pronunciation_score', 'feedback','highlighted_transcript','highlighted_article', 'manual_feedback_link')
+    readonly_fields = ('manual_feedback_link', 'transcript', 'pronunciation_score', 'feedback','highlighted_transcript','highlighted_article')
 
     # Add a link to the feedback creation page
     def manual_feedback_link(self, obj):
