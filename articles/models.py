@@ -184,7 +184,7 @@ class Feedback(models.Model):
         valid_scores = [score for score in scores if score is not None]
 
         if valid_scores:
-            self.overall_score = sum(valid_scores) / len(valid_scores)
+            self.overall_score = int(sum(valid_scores) / len(valid_scores))
         else:
             self.overall_score = None
 
