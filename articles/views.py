@@ -7,6 +7,7 @@ from django.http import HttpResponse
 from .models import Article, UserRecording
 from .forms import UserRecordingForm
 from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
 
 def article_list(request):
     """Display all articles."""
@@ -90,7 +91,7 @@ def generate_feedback(transcript, article_content):
     # Return feedback, highlighted transcript, and highlighted article
     return "\n".join(feedback), highlighted_transcript_text, highlighted_article_text
 
-
+@login_required
 def article_record(request, pk):
     """Page for recording audio for an article."""
     article = get_object_or_404(Article, pk=pk)
@@ -186,11 +187,13 @@ def text_to_speech(request):
         # Handle errors and return a response
         return HttpResponse(f"Error generating speech: {str(e)}", status=500)
 
+@login_required
 def user_recording_list(request):
     """Display a list of recordings made by the logged-in user."""
     recordings = UserRecording.objects.filter(user=request.user).order_by('-submitted_at')
     return render(request, 'articles/user_recording_list.html', {'recordings': recordings})
 
+@login_required
 def user_recording_detail(request, pk):
     """Display the details of a specific recording, including scores and feedback."""
     recording = get_object_or_404(UserRecording, pk=pk, user=request.user)
