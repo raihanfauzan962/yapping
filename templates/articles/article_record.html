@@ -2,6 +2,13 @@
 {% load static %}
 
 {% block content %}
+<!-- Loading Icon -->
+<div class="loading-overlay" id="loading-overlay">
+    <div class="loading-content">
+        <div class="loading-spinner"></div>
+        <p>Processing your recording...</p>
+    </div>
+</div>
 <main class="recording-container">
     <article class="recording-card">
         <header class="recording-header">
@@ -11,7 +18,7 @@
                 <span class="warning-text">Avoid background noise for best results</span>
             </p>
         </header>
-
+        
         <!-- Controls Section -->
         <section class="controls-section">
             <div class="button-group">
