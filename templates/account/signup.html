@@ -1,13 +1,35 @@
 {% extends "_base.html" %}
-{% load crispy_forms_tags %}
+{% load static %}
 
 {% block title %}Sign Up{% endblock title %}
 
 {% block content %}
-  <h2>Sign Up</h2>
-  <form method="post">
-    {% csrf_token %}
-    {{ form|crispy }}
-    <button class="btn btn-success" type="submit">Sign Up</button>
-  </form>
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="auth-header">
+            <h1>Create an Account</h1>
+            <p>Join us and start your learning journey</p>
+        </div>
+
+        <form method="post" class="auth-form">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="id_email">Email</label>
+                <input type="email" name="email" id="id_email" class="form-control" placeholder="Enter your email" required>
+            </div>
+            <div class="form-group">
+                <label for="id_password1">Password</label>
+                <input type="password" name="password1" id="id_password1" class="form-control" placeholder="Create a password" required>
+            </div>
+            <button class="auth-btn" type="submit">
+                <i class="fas fa-user-plus"></i>
+                Sign Up
+            </button>
+        </form>
+
+        <div class="auth-footer">
+            <p>Already have an account? <a href="{% url 'account_login' %}">Log In</a></p>
+        </div>
+    </div>
+</div>
 {% endblock content %}
