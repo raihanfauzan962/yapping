@@ -1,3 +1,12 @@
+from environs import Env
+
+env = Env()
+env.read_env()
+
+# Load values from .env
+SITE_LOGO = env("SITE_LOGO", default="")
+LOGIN_LOGO = env("LOGIN_LOGO", default="")
+
 # JAZZMIN CONFIGURATIONS
 JAZZMIN_SETTINGS = {
     # title of the window (Will default to current_admin_site.site_title if absent or None)
@@ -10,10 +19,10 @@ JAZZMIN_SETTINGS = {
     "site_brand": "Yapping",
 
     # Logo to use for your site, must be present in static files, used for brand on top left
-    "site_logo": r"C:\Users\raiha\Raihan Fauzan\Program\yapping\static\images\yapping.png",
+    "site_logo": SITE_LOGO,
 
     # Logo to use for your site, must be present in static files, used for login form logo (defaults to site_logo)
-    "login_logo": r"C:\Users\raiha\Raihan Fauzan\Program\yapping\static\images\yapping_resized.png",
+    "login_logo": LOGIN_LOGO,
 
     # Logo to use for login form in dark themes (defaults to login_logo)
     "login_logo_dark": None,
