@@ -179,6 +179,10 @@ span[style*="color: red;"] {
     border-radius: 1rem;
 }
 
+.pending-icon i {
+    font-size: 2rem; /* Adjust the size as needed */
+}
+
 @media (max-width: 768px) {
     .recording-detail {
         padding: 0 1rem;
