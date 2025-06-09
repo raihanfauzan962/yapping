@@ -10,4 +10,7 @@ urlpatterns = [
     path('user/recordings/<int:pk>/', views.user_recording_detail, name='user_recording_detail'),
     
     path('text-to-speech/', views.text_to_speech, name='text_to_speech'),
+    
+    path('user_recording_progress/', views.get_user_recording_progress, name='user_recording_progress'),
+    path('get_progress_data/', views.get_progress_data, name='get_progress_data'),
 ]

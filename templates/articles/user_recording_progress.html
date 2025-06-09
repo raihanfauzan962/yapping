@@ -1,0 +1,163 @@
+{% extends '_base.html' %}
+{% load static %}
+
+{% block content %}
+<main class="progress-detail">
+    <header class="progress-header">
+        <h1><i class="fas fa-chart-line"></i> User Recording Progress</h1>
+        <div class="meta-info">
+            <label for="article-select" class="form-label">Select an Article:</label>
+            <select id="article-select" class="form-select">
+                <option value="">-- Select an Article --</option>
+                {% for article in articles %}
+                    <option value="{{ article.id }}" {% if selected_article and selected_article.id == article.id %}selected{% endif %}>
+                        {{ article.title }}
+                    </option>
+                {% endfor %}
+            </select>
+            <button class="btn btn-primary mt-3" id="fetch-progress">Show Progress</button>
+        </div>
+    </header>
+
+    <section class="chart-section">
+        <h2><i class="fas fa-chart-pie"></i> Evaluator's Overall Scores</h2>
+        <div class="chart-container">
+            <canvas id="overallChart"></canvas>
+        </div>
+    </section>
+
+    <section class="chart-section">
+        <h2><i class="fas fa-chart-bar"></i> AI's Pronunciation Scores</h2>
+        <div class="chart-container">
+            <canvas id="pronunciationChart"></canvas>
+        </div>
+    </section>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.getElementById("fetch-progress").addEventListener("click", function() {
+        const articleId = document.getElementById("article-select").value;
+        if (!articleId) {
+            alert("Please select an article.");
+            return;
+        }
+
+        fetch("{% url 'get_progress_data' %}?article_id=" + articleId)
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert(data.error);
+                    return;
+                }
+                renderCharts(data.labels, data.pronunciation_scores, data.overall_scores);
+            })
+            .catch(error => console.error("Error fetching progress data:", error));
+    });
+
+    function renderCharts(labels, pronunciationScores, overallScores) {
+        renderChart('overallChart', labels, overallScores, 'Overall Score', 'rgba(75, 192, 192, 1)', 10, 1);
+        renderChart('pronunciationChart', labels, pronunciationScores, 'Pronunciation Score', 'rgba(54, 162, 235, 1)', 100, 10);
+    }
+
+    function renderChart(canvasId, labels, scores, label, borderColor, maxValue, stepSize) {
+        const ctx = document.getElementById(canvasId).getContext('2d');
+        
+        if (window[`${canvasId}Instance`]) {
+            window[`${canvasId}Instance`].destroy();
+        }
+
+        window[`${canvasId}Instance`] = new Chart(ctx, {
+            type: "line",
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: label,
+                    data: scores,
+                    borderColor: borderColor,
+                    borderWidth: 2,
+                    tension: 0.4,
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: maxValue,
+                        ticks: {
+                            stepSize: stepSize
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            autoSkip: true,
+                            maxTicksLimit: 10
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    }
+                }
+            }
+        });
+    }
+</script>
+
+<style>
+    :root {
+        --primary: #2A6B84;
+        --secondary: #4CAF50;
+        --dark: #1a1a1a;
+        --light: #f8f9fa;
+    }
+
+    .progress-detail {
+        max-width: 1200px;
+        margin: 2rem auto;
+        padding: 0 1.5rem;
+    }
+
+    .progress-header {
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+
+    .meta-info {
+        background: rgba(42, 107, 132, 0.05);
+        padding: 1.5rem;
+        border-radius: 1rem;
+        margin-top: 1rem;
+        text-align: center;
+    }
+
+    .chart-section {
+        margin: 3rem 0;
+        text-align: center;
+    }
+
+    .chart-container {
+        width: 100%;
+        max-width: 100%;
+        height: 500px; /* Adjust as needed */
+        margin: auto;
+        background: white;
+        padding: 3rem;
+        border-radius: 1rem;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    @media (max-width: 768px) {
+        .progress-detail {
+            padding: 0 1rem;
+        }
+    }
+</style>
+{% endblock %}

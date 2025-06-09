@@ -4,10 +4,13 @@ import tempfile
 from gtts import gTTS
 from difflib import SequenceMatcher
 from django.http import HttpResponse
-from .models import Article, UserRecording
+from .models import Article, UserRecording, Feedback
 from .forms import UserRecordingForm
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseForbidden
+from django.http import JsonResponse
+
 
 def article_list(request):
     """Display all articles."""
@@ -198,3 +201,67 @@ def user_recording_detail(request, pk):
     """Display the details of a specific recording, including scores and feedback."""
     recording = get_object_or_404(UserRecording, pk=pk, user=request.user)
     return render(request, 'articles/user_recording_detail.html', {'recording': recording})
+
+@login_required
+def delete_user_recording(request, pk):
+    """Allow users to delete their own recordings."""
+    recording = get_object_or_404(UserRecording, pk=pk)
+    
+    if recording.user != request.user:
+        return HttpResponseForbidden("You are not allowed to delete this recording.")
+    
+    recording.delete()
+    return redirect('user_recording_list')
+
+@login_required
+def get_user_recording_progress(request):
+    """Render the progress tracking page."""
+    user = request.user
+    # Filter only articles that the user has recordings for
+    articles = Article.objects.filter(user_recordings__user=user).distinct()
+
+    selected_article_id = request.GET.get("article_id")
+    selected_article = None
+    user_recordings = []
+
+    if selected_article_id:
+        selected_article = articles.filter(id=selected_article_id).first()
+        if selected_article:
+            user_recordings = UserRecording.objects.filter(user=user, article=selected_article).order_by("submitted_at")
+
+    context = {
+        "articles": articles,
+        "selected_article": selected_article,
+        "user_recordings": user_recordings,
+    }
+    return render(request, "articles/user_recording_progress.html", context)
+
+@login_required
+def get_progress_data(request):
+    """Return JSON progress data for the selected article."""
+    user = request.user
+    article_id = request.GET.get("article_id")
+
+    if not article_id:
+        return JsonResponse({"error": "No article selected"}, status=400)
+
+    user_recordings = UserRecording.objects.filter(user=user, article_id=article_id).order_by("submitted_at")
+
+    labels = []  
+    pronunciation_scores = []
+    overall_scores = []
+
+    for index, recording in enumerate(user_recordings, start=1):
+        date_label = recording.submitted_at.strftime("%d-%m-%Y")
+        labels.append(f"Attempt {index}\n({date_label})")
+        pronunciation_scores.append(recording.pronunciation_score if recording.pronunciation_score else 0)
+
+        feedback = Feedback.objects.filter(recording=recording).first()
+        overall_scores.append(feedback.overall_score if feedback and feedback.overall_score else 0)
+
+    return JsonResponse({
+        "labels": labels,
+        "pronunciation_scores": pronunciation_scores,
+        "overall_scores": overall_scores,
+    })
+

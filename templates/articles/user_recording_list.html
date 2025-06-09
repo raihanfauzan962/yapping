@@ -6,6 +6,9 @@
     <header class="recordings-header">
         <h1>Your Voice Recordings</h1>
         <p class="subtitle">Review and manage your practice sessions</p>
+        <a href="{% url 'user_recording_progress' %}">
+            View Your Recording Progress
+        </a>
     </header>
 
     {% if recordings %}

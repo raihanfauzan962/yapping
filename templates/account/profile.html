@@ -1,0 +1,56 @@
+{% extends '_base.html' %}
+{% load static %}
+
+{% block title %}User Profile{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+    <div class="profile-card">
+        <div class="profile-header">
+            <div class="avatar-container">
+                <i class="fas fa-user-circle avatar-icon"></i>
+            </div>
+            <h1 class="username">{{ user.username }}</h1>
+            <div class="status-indicator"></div>
+        </div>
+
+        <div class="profile-details">
+            <div class="detail-item">
+                <i class="fas fa-envelope icon"></i>
+                <div class="detail-content">
+                    <span class="detail-label">Email</span>
+                    <p class="detail-value">{{ user.email }}</p>
+                </div>
+            </div>
+
+            <div class="detail-item">
+                <i class="fas fa-file-audio icon"></i>
+                <div class="detail-content">
+                    <span class="detail-label">Recordings</span>
+                    <a href="{% url 'user_recording_list' %}" class="detail-link">
+                        View Collection <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="detail-item">
+                <i class="fa-solid fa-chart-simple icon"></i>
+                <div class="detail-content">
+                    <span class="detail-label">Recordings Progress</span>
+                    <a href="{% url 'user_recording_progress' %}" class="detail-link">
+                        View Your Recording Progress <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="profile-actions">
+            <a href="{% url 'account_logout' %}" class="logout-btn">
+                <i class="fas fa-sign-out-alt"></i> Sign Out
+            </a>
+        </div>
+        
+        <div class="decorative-element"></div>
+    </div>
+</div>
+{% endblock %}
