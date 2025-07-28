@@ -13,14 +13,51 @@
 
         <form method="post" class="auth-form">
             {% csrf_token %}
+            
+            <!-- Error Messages -->
+            {% if form.errors %}
+                <div class="error-messages">
+                    <ul>
+                        {% for field in form %}
+                            {% for error in field.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        {% endfor %}
+                        {% for error in form.non_field_errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+
             <div class="form-group">
                 <label for="id_email">Email</label>
-                <input type="email" name="email" id="id_email" class="form-control" placeholder="Enter your email" required>
+                <input type="email" name="email" id="id_email" class="form-control" placeholder="Enter your email" required
+                       value="{{ form.email.value|default_if_none:'' }}">
+                {% if form.email.errors %}
+                    <small class="error">{{ form.email.errors.as_text }}</small>
+                {% endif %}
             </div>
+
             <div class="form-group">
                 <label for="id_password1">Password</label>
                 <input type="password" name="password1" id="id_password1" class="form-control" placeholder="Create a password" required>
+                {% if form.password1.errors %}
+                    <small class="error">{{ form.password1.errors.as_text }}</small>
+                {% endif %}
             </div>
+
+            <!-- Password Validation Rules -->
+            <div class="password-rules" style="text-align: left;">
+                <p>Password requirements:</p>
+                <ul>
+                    <li>Your password must be at least 8 characters long.</li>
+                    <li>Your password can't be too similar to your other personal information.</li>
+                    <li>Your password can't be a commonly used password.</li>
+                    <li>Your password can't be entirely numeric.</li>
+                </ul>
+            </div>
+
             <button class="auth-btn" type="submit">
                 <i class="fas fa-user-plus"></i>
                 Sign Up
